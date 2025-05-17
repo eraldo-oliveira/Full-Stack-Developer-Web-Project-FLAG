@@ -1,4 +1,4 @@
-const API_URL = "https://full-stack-developer-web-project-flag.onrender.com/recipes";
+const API_URL = `${import.meta.env.VITE_API_URL}/recipes`;
 
 // Constrói FormData a partir do objeto da receita
 function buildFormData(recipe) {
