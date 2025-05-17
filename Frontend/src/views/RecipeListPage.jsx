@@ -5,11 +5,10 @@ import { getAllRecipes, deleteRecipe } from "../services/recipeService";
 
 function RecipeListPage() {
   const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true); // Estado de carregamento
+  const [loading, setLoading] = useState(true);
   const [, navigate] = useLocation();
 
   useEffect(() => {
-    // Carregar receitas ao montar o componente
     getAllRecipes()
       .then((recipes) => {
         if (Array.isArray(recipes)) {
@@ -17,7 +16,7 @@ function RecipeListPage() {
         } else {
           console.error("Dados de receitas não são válidos", recipes);
         }
-        setLoading(false); // Finaliza o carregamento
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Erro ao carregar receitas:", error);
@@ -46,7 +45,6 @@ function RecipeListPage() {
     <main className="max-w-4xl mx-auto px-6 py-12">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">Lista de receitas</h1>
 
-      {/* Botão de adicionar nova receita */}
       <div className="flex justify-center mb-6">
         <button
           onClick={() => navigate("/nova-receita")}
@@ -57,13 +55,11 @@ function RecipeListPage() {
         </button>
       </div>
 
-      {/* Lista de receitas */}
       {loading ? (
         <div className="text-center py-16 text-gray-500">Carregando receitas...</div>
       ) : (
         <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           {recipes.map((recipe) => {
-            // Garantir que o 'id' seja único
             const key = recipe._id ? recipe._id : `recipe-${recipe.title}-${Math.random()}`;
 
             return (

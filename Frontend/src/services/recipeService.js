@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/recipes";
+const API_URL = "https://full-stack-developer-web-project-flag.onrender.com/recipes";
 
 // Constrói FormData a partir do objeto da receita
 function buildFormData(recipe) {
@@ -8,12 +8,12 @@ function buildFormData(recipe) {
     if (key === "imageFile" && recipe.imageFile) {
       formData.append("imageFile", recipe.imageFile);
     } else if (key === "ingredients") {
-      // Agora, adicionamos os ingredientes ao FormData individualmente
+      // Adiciona ingredientes individualmente no FormData
       recipe[key].forEach((ingredient, index) => {
         formData.append(`ingredients[${index}]`, ingredient);
       });
     } else if (Array.isArray(recipe[key])) {
-      // Para outros arrays, ainda pode ser tratado da mesma forma
+      // Para outros arrays
       recipe[key].forEach((item, index) => {
         formData.append(`${key}[${index}]`, item); 
       });

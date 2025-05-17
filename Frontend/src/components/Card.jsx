@@ -7,14 +7,17 @@ function Card({ data }) {
   const [visibleCards, setVisibleCards] = useState(3);
   const [, setLocation] = useLocation();
 
+  // Pega a URL da API do ambiente (frontend)
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (!data) {
-      fetch("http://localhost:3000/recipes")
+      fetch(`${API_URL}recipes`)
         .then((response) => response.json())
         .then(setCards)
         .catch((error) => console.error("Erro ao carregar cards:", error));
     }
-  }, [data]);
+  }, [data, API_URL]);
 
   const cardsToRender = data || cards;
   const cardsToDisplay = cardsToRender.slice(0, visibleCards);
@@ -39,9 +42,10 @@ function Card({ data }) {
               className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col justify-between"
             >
               <img
-                src={`http://localhost:3000${card.image}`}
+                src={`${API_URL.replace(/\/$/, "")}/${card.image.replace(/^\//, "")}`}
                 alt={`Imagem de ${card.title}`}
                 className="w-full h-[250px] object-cover"
+                draggable={false}
               />
 
               <div className="p-4 space-y-2 flex flex-col justify-between items-center text-center">

@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { useLocation } from "wouter"; // Importa o hook de navegação
+import { useLocation } from "wouter";
+
+const USERNAME = import.meta.env.VITE_TEST_USERNAME;
+const PASSWORD = import.meta.env.VITE_TEST_PASSWORD;
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Adiciona estado para controle de carregamento
-  const [, setLocation] = useLocation(); // Hook do wouter
+  const [loading, setLoading] = useState(false);
+  const [, setLocation] = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,18 +19,17 @@ function LoginPage() {
       return;
     }
 
-    setLoading(true); // Inicia carregamento ao submeter o formulário
+    setLoading(true);
 
-    // Simula um processo de login (normalmente, você faria uma requisição para um backend)
     setTimeout(() => {
-      if (username === "admin" && password === "batata123") {
+      if (username === USERNAME && password === PASSWORD) {
         setError("");
-        setLocation("/receitas"); // Redireciona para /receitas
+        setLocation("/receitas");
       } else {
         setError("Nome de usuário ou senha incorretos");
       }
-      setLoading(false); // Finaliza o carregamento
-    }, 1000); // Simula um delay de 1 segundo
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -70,8 +72,10 @@ function LoginPage() {
         <div className="flex justify-center mt-6">
           <button
             type="submit"
-            className={`px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md transition ${loading ? "cursor-not-allowed opacity-50" : ""}`}
-            disabled={loading} // Desabilita o botão durante o carregamento
+            className={`px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md transition ${
+              loading ? "cursor-not-allowed opacity-50" : ""
+            }`}
+            disabled={loading}
           >
             {loading ? "Carregando..." : "Entrar"}
           </button>
@@ -91,4 +95,3 @@ function LoginPage() {
 }
 
 export default LoginPage;
-
