@@ -8,7 +8,7 @@ function Footer() {
             Desenvolvido por: <span className="text-gray-700">Eraldo Junior</span>
           </p>
           <p className="text-lg md:text-xl font-medium mt-2">
-            &copy; 2024 Todos os direitos reservados.
+            &copy; 2025 Todos os direitos reservados.
           </p>
 
           {/* Ícones de redes sociais */}
