@@ -11,7 +11,7 @@ const capitalizeFirstLetter = (str) =>
 function getImageUrl(imagePath) {
   if (!imagePath) return "";
   const cleanPath = imagePath.replace(/^\/+/, "");
-  return `${API_URL}/${cleanPath}`;
+  return `${cleanPath}`;
 }
 
 function DetailsPage() {

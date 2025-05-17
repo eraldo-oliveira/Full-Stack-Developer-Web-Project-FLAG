@@ -1,6 +1,7 @@
 import Recipe from '../models/Recipe.js';
 import fs from "fs";
 import path from "path";
+import { s3 } from "../config/aws.js";
 
 export const getAllRecipes = async (req, res) => {
   try {
@@ -27,15 +28,29 @@ export const getRecipeById = async (req, res) => {
 
 export const createRecipe = async (req, res) => {
     try {
-      const imageUrl = req.file ? `/images/${req.file.filename}` : null;
-  
-      const newRecipe = new Recipe({
-        ...req.body, 
-        image: imageUrl, 
+      const params = {
+        Bucket: process.env.AWS_S3_BUCKET,
+        Key: req.file.originalname,
+        Body: req.file.buffer,
+      };
+
+      s3.upload(params, async (err, data) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send('Error uploading file');
+        }
+        const imageUrl = data.Location; 
+    
+        const newRecipe = new Recipe({
+          ...req.body, 
+          image: imageUrl, 
+        });
+    
+        await newRecipe.save();
+        res.status(201).json(newRecipe);
+        // res.send('File uploaded successfully');
       });
-  
-      await newRecipe.save();
-      res.status(201).json(newRecipe);
+
     } catch (err) {
       console.error(err);
       res.status(400).json({ error: "Erro ao criar a receita." });
@@ -49,24 +64,32 @@ export const createRecipe = async (req, res) => {
       if (!recipe) return res.status(404).json({ error: "Receita não encontrada" });
   
       if (req.file) {
-        if (recipe.image) {
-          const imagePath = path.join("public", recipe.image); 
-  
-          if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
-          }
+      const params = {
+        Bucket: process.env.AWS_S3_BUCKET,
+        Key: req.file.originalname,
+        Body: req.file.buffer,
+      };
+
+      s3.upload(params, async (err, data) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send('Error uploading file');
         }
-  
-        req.body.image = `/images/${req.file.filename}`;
+        const imageUrl = data.Location; 
+    
+        req.body.image = imageUrl;
+
+        const updatedRecipe = await Recipe.findOneAndUpdate(
+          { _id: req.params._id },
+          req.body,
+          { new: true }
+        );
+    
+        res.json(updatedRecipe);
+      });
+
       }
   
-      const updatedRecipe = await Recipe.findOneAndUpdate(
-        { _id: req.params._id },
-        req.body,
-        { new: true }
-      );
-  
-      res.json(updatedRecipe);
     } catch (err) {
       console.error(err);
       res.status(400).json({ error: "Erro ao atualizar a receita." });

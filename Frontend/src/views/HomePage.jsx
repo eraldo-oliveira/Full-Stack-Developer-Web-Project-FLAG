@@ -86,7 +86,7 @@ function HomePage() {
   };
 
   const chefImageUrl = chefSuggestion
-    ? `${API_URL.replace(/\/$/, "")}/${chefSuggestion.image.replace(/^\//, "")}`
+    ? chefSuggestion.image
     : "";
 
   return (

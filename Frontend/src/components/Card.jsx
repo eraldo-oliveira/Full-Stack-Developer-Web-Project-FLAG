@@ -41,7 +41,7 @@ function Card({ data }) {
               className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col justify-between"
             >
               <img
-                src={`${API_URL.replace(/\/$/, "")}/${card.image.replace(/^\//, "")}`}
+                src={card.image}
                 alt={`Imagem de ${card.title}`}
                 className="w-full h-[250px] object-cover"
                 draggable={false}
