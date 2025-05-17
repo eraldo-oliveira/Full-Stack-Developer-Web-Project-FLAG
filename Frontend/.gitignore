@@ -1,8 +1,4 @@
-
-logs
-
-node_modules
-
-.env.local
-
 .env
+.env.local
+node_modules/
+*.log
