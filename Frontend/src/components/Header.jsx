@@ -23,7 +23,7 @@ function Header() {
                 className="h-10 sm:h-12 md:h-14 w-auto"
               />
               <h1 className="text-white text-lg sm:text-2xl md:text-3xl font-bold">
-                Receitinhas
+                Receitas
               </h1>
             </button>
           </div>
