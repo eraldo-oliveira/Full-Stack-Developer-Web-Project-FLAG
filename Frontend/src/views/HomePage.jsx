@@ -174,7 +174,7 @@ function HomePage() {
       </section>
 
       {/* Sugestão do Chef */}
-      <section className="px-6 text-center mb-6 max-w-screen-xl mx-auto -mt-8">
+      <section className="px-6 text-center mb-6 max-w-screen-xl mx-auto -mt-18">
         <div className="flex items-center justify-center gap-2 mb-6">
           <ChevronDown className="w-6 h-6 text-gray-600" />
           <h2 className="text-3xl font-semibold text-gray-800">Sugestão do Chef</h2>

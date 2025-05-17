@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { addRecipe, updateRecipe } from "../services/recipeService";
 import { useLocation } from "wouter";
 
+const BASE_URL = "https://full-stack-developer-web-project-flag.onrender.com";
+
 function RecipeForm({ initialData }) {
   const [form, setForm] = useState(
     initialData || {
@@ -20,9 +22,36 @@ function RecipeForm({ initialData }) {
   );
 
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(initialData?.image || null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    if (initialData?.image) {
+      console.log("Imagem original do initialData:", initialData.image);
+
+      let imageUrl = "";
+
+      if (
+        initialData.image.startsWith("http://") ||
+        initialData.image.startsWith("https://")
+      ) {
+        imageUrl = initialData.image;
+      } else {
+        // Remove a barra inicial se existir para evitar //
+        const path = initialData.image.startsWith("/")
+          ? initialData.image.substring(1)
+          : initialData.image;
+
+        imageUrl = BASE_URL.endsWith("/")
+          ? BASE_URL + path
+          : BASE_URL + "/" + path;
+      }
+
+      console.log("URL da imagem usada no preview:", imageUrl);
+      setImagePreview(imageUrl);
+    }
+  }, [initialData?.image]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -103,6 +132,10 @@ function RecipeForm({ initialData }) {
               src={imagePreview}
               alt="Pré-visualização"
               className="w-32 h-32 object-cover rounded border"
+              onError={() => {
+                console.error("Erro ao carregar a imagem preview:", imagePreview);
+                setImagePreview(null);
+              }}
             />
           ) : (
             <div className="w-32 h-32 flex items-center justify-center text-gray-400 border rounded">
@@ -161,7 +194,7 @@ function RecipeForm({ initialData }) {
           <button
             type="button"
             onClick={() => setForm({ ...form, ingredients: [...form.ingredients, ""] })}
-            className="text-blue-600 hover:underline mt-1"
+            className="text-blue-600 hover:underline mt-1 cursor-pointer"
           >
             + Adicionar ingrediente
           </button>
@@ -234,7 +267,7 @@ function RecipeForm({ initialData }) {
           name="chefSuggestion"
           checked={form.chefSuggestion}
           onChange={(e) => setForm({ ...form, chefSuggestion: e.target.checked })}
-          className="w-5 h-5"
+          className="w-5 h-5 cursor-pointer"
         />
         <span className="font-semibold">Marcar como Sugestão do Chef</span>
       </label>
@@ -244,7 +277,7 @@ function RecipeForm({ initialData }) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition ${
+          className={`flex-1 cursor-pointer bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition ${
             isSubmitting ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
