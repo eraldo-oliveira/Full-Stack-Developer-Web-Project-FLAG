@@ -85,7 +85,6 @@ function HomePage() {
     }
   };
 
-  // Monta URL da imagem sem duplicar ou faltar barras
   const chefImageUrl = chefSuggestion
     ? `${API_URL.replace(/\/$/, "")}/${chefSuggestion.image.replace(/^\//, "")}`
     : "";

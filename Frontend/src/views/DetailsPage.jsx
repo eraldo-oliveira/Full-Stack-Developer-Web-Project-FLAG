@@ -3,16 +3,13 @@ import { useRoute } from "wouter";
 import { Heart } from "lucide-react";
 import { Link } from "wouter";
 
-// Importa a URL da API do .env e remove barra final, se houver
 const API_URL = import.meta.env.VITE_API_URL.replace(/\/$/, "");
 
 const capitalizeFirstLetter = (str) =>
   str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
-// Função para montar URL correta da imagem, evitando barras duplicadas
 function getImageUrl(imagePath) {
   if (!imagePath) return "";
-  // Remove barra inicial da imagem, se existir
   const cleanPath = imagePath.replace(/^\/+/, "");
   return `${API_URL}/${cleanPath}`;
 }

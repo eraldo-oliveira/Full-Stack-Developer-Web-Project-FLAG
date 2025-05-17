@@ -5,13 +5,12 @@ import { addRecipe } from "../services/recipeService";
 
 function CreateRecipePage() {
   const [loading] = useState(false);
-  const [, navigate] = useLocation();  // Hook do wouter para navegação
+  const [, navigate] = useLocation();  
 
   const handleSubmit = async (form) => {
-    console.log("Formulário enviado:", form);
     try {
-      await addRecipe(form);  // Adiciona a receita
-      navigate("/receitas", { replace: true });  // Redireciona para a lista de receitas após a criação
+      await addRecipe(form);  
+      navigate("/receitas", { replace: true });  
     } catch (error) {
       console.error("Erro ao criar receita:", error);
     }

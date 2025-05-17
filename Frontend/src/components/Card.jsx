@@ -7,7 +7,6 @@ function Card({ data }) {
   const [visibleCards, setVisibleCards] = useState(3);
   const [, setLocation] = useLocation();
 
-  // Pega a URL da API do ambiente (frontend)
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {

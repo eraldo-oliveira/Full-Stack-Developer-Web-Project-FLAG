@@ -1,4 +1,3 @@
-
 import Recipe from '../models/Recipe.js';
 import fs from "fs";
 import path from "path";
@@ -28,12 +27,11 @@ export const getRecipeById = async (req, res) => {
 
 export const createRecipe = async (req, res) => {
     try {
-      // Se houver imagem, atualiza o campo 'image' com o caminho da imagem
       const imageUrl = req.file ? `/images/${req.file.filename}` : null;
   
       const newRecipe = new Recipe({
-        ...req.body, // Preenche com os dados do body (exceto a imagem)
-        image: imageUrl, // Salva o caminho da imagem no banco
+        ...req.body, 
+        image: imageUrl, 
       });
   
       await newRecipe.save();
@@ -50,23 +48,18 @@ export const createRecipe = async (req, res) => {
   
       if (!recipe) return res.status(404).json({ error: "Receita não encontrada" });
   
-      // Se houver uma nova imagem
       if (req.file) {
-        // Caminho da imagem antiga
         if (recipe.image) {
           const imagePath = path.join("public", recipe.image); 
   
-          // Se o arquivo existe, deleta
           if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);
           }
         }
   
-        // Atualiza o caminho da nova imagem
         req.body.image = `/images/${req.file.filename}`;
       }
   
-      // Atualiza os campos restantes
       const updatedRecipe = await Recipe.findOneAndUpdate(
         { _id: req.params._id },
         req.body,
@@ -81,7 +74,7 @@ export const createRecipe = async (req, res) => {
   };
 
 
-export const deleteRecipe = async (req, res) => {
+  export const deleteRecipe = async (req, res) => {
     try {
       const recipe = await Recipe.findOneAndDelete({ _id: req.params._id });
       if (!recipe) {
@@ -101,7 +94,6 @@ export const deleteRecipe = async (req, res) => {
     }
   
     try {
-      // Faz busca por ingrediente parcial (case-insensitive)
       const recipes = await Recipe.find({
         ingredients: { $regex: new RegExp(ingredient, "i") }
       });
@@ -157,8 +149,8 @@ export const deleteRecipe = async (req, res) => {
 
     const similar = await Recipe.find({
       mealType: currentRecipe.mealType,
-      slug: { $ne: slug }, // Exclui a receita atual
-    }).limit(6); // Limita o número de receitas similares
+      slug: { $ne: slug }, 
+    }).limit(6); 
 
     res.json(similar);
   } catch (err) {
@@ -173,7 +165,7 @@ export const getChefSuggestion = async (req, res) => {
     if (chefRecipes.length === 0) {
       return res.status(404).json({ message: "Nenhuma sugestão do chef encontrada." });
     }
-    // Escolher uma receita aleatória
+  
     const randomIndex = Math.floor(Math.random() * chefRecipes.length);
     const randomRecipe = chefRecipes[randomIndex];
 

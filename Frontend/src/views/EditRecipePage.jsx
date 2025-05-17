@@ -7,11 +7,10 @@ function EditRecipePage() {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
   const { _id } = useParams();
-  const [, navigate] = useLocation();  // Hook do wouter para navegação
+  const [, navigate] = useLocation(); 
 
   useEffect(() => {
     const loadRecipe = async () => {
-      console.log("Carregando receita com ID:", _id);
       setLoading(true);
       try {
         const recipeData = await getRecipeById(_id);
@@ -19,7 +18,7 @@ function EditRecipePage() {
           setRecipe(recipeData);
         } else {
           console.error("Receita não encontrada");
-          navigate("/receitas", { replace: true });  // Redireciona caso não encontre a receita
+          navigate("/receitas", { replace: true });  
         }
       } catch (error) {
         console.error("Erro ao carregar a receita:", error);
@@ -32,15 +31,14 @@ function EditRecipePage() {
   }, [_id, navigate]);
 
   const handleSubmit = async (form) => {
-    console.log("Formulário editado:", form);
     if (!form.title || !form.description || form.ingredients.length === 0) {
       alert("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
 
     try {
-      await updateRecipe(form);  // Atualiza a receita
-      navigate("/receitas", { replace: true });  // Redireciona para a lista de receitas após a edição
+      await updateRecipe(form);  
+      navigate("/receitas", { replace: true }); 
     } catch (error) {
       console.error("Erro ao atualizar a receita:", error);
       alert("Houve um erro ao atualizar a receita. Tente novamente!");

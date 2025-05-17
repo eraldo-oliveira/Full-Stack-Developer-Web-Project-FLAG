@@ -1,6 +1,5 @@
 const API_URL = `${import.meta.env.VITE_API_URL}recipes`;
 
-// Constrói FormData a partir do objeto da receita
 function buildFormData(recipe) {
   const formData = new FormData();
 
@@ -8,12 +7,10 @@ function buildFormData(recipe) {
     if (key === "imageFile" && recipe.imageFile) {
       formData.append("imageFile", recipe.imageFile);
     } else if (key === "ingredients") {
-      // Adiciona ingredientes individualmente no FormData
       recipe[key].forEach((ingredient, index) => {
         formData.append(`ingredients[${index}]`, ingredient);
       });
     } else if (Array.isArray(recipe[key])) {
-      // Para outros arrays
       recipe[key].forEach((item, index) => {
         formData.append(`${key}[${index}]`, item); 
       });
@@ -25,21 +22,21 @@ function buildFormData(recipe) {
   return formData;
 }
 
-// Pega todas as receitas
+
 export async function getAllRecipes() {
   const response = await fetch(API_URL);
   if (!response.ok) throw new Error("Erro ao buscar receitas");
   return await response.json();
 }
 
-// Pega receita por ID
+
 export async function getRecipeById(_id) {
   const response = await fetch(`${API_URL}/${_id}`);
   if (!response.ok) throw new Error("Receita não encontrada");
   return await response.json();
 }
 
-// Atualiza receita
+
 export async function updateRecipe(updatedRecipe) {
   const formData = buildFormData(updatedRecipe);
 
@@ -52,7 +49,6 @@ export async function updateRecipe(updatedRecipe) {
   return await response.json();
 }
 
-// Remove receita
 export async function deleteRecipe(_id) {
   const response = await fetch(`${API_URL}/${_id}`, {
     method: "DELETE",
@@ -60,7 +56,6 @@ export async function deleteRecipe(_id) {
   if (!response.ok) throw new Error("Erro ao excluir receita");
 }
 
-// Adiciona nova receita
 export async function addRecipe(newRecipe) {
   const formData = buildFormData(newRecipe);
 

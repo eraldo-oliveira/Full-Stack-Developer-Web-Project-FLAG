@@ -28,7 +28,6 @@ function RecipeForm({ initialData }) {
 
   useEffect(() => {
     if (initialData?.image) {
-      console.log("Imagem original do initialData:", initialData.image);
 
       let imageUrl = "";
 
@@ -48,7 +47,6 @@ function RecipeForm({ initialData }) {
           : BASE_URL + "/" + path;
       }
 
-      console.log("URL da imagem usada no preview:", imageUrl);
       setImagePreview(imageUrl);
     }
   }, [initialData?.image]);
@@ -60,7 +58,6 @@ function RecipeForm({ initialData }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validação básica
     if (!form.title || !form.slug || !form.description || !form.instructions) {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return;
